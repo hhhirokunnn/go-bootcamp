@@ -17,12 +17,14 @@ func TestValidateArgs(t *testing.T) {
 		{[]string{}, false},
 		{[]string{"dummy_file.txt"}, false},
 		{[]string{"-l", "dummy_file.txt"}, false},
+		{[]string{"-l", "test_file.txt"}, false},
 		{[]string{"-invalid", "dummy_file.txt"}, false},
 		{[]string{"-l", "-b", "dummy_file.txt"}, false},
+		{[]string{"-l", "-b", "test_file.txt"}, false},
 		{[]string{"test_file.txt"}, true},
-		{[]string{"-l", "test_file.txt"}, true},
-		{[]string{"-n", "test_file.txt"}, true},
-		{[]string{"-b", "test_file.txt"}, true},
+		{[]string{"-l", "1", "test_file.txt"}, true},
+		{[]string{"-n", "1", "test_file.txt"}, true},
+		{[]string{"-b", "1", "test_file.txt"}, true},
 	}
 
 	for _, tt := range tests {

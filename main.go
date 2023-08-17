@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strconv"
 )
 
 func main() {
@@ -11,17 +12,18 @@ func main() {
 
 	if !ValidateArgs(args) {
 		DescribeUsage()
-		// noop
-		return
+		return // noop
 	}
 
-	if len(args) == 2 {
+	if len(args) == 3 {
 		option, file := args[0], args[1]
 		fmt.Println(option)
 		fmt.Println(file)
-	} else {
+	} else if len(args) == 1 {
 		// only len(args) is 1
 		CopyFile(args[0])
+	} else {
+		fmt.Errorf("unexpected")
 	}
 
 	return
@@ -47,16 +49,21 @@ func ValidateArgs(args []string) bool {
 		fmt.Printf("no args")
 		return false
 	}
-	if len(args) > 2 {
+	if len(args) > 3 {
 		fmt.Printf("too much args")
 		return false
 	}
-	if len(args) == 2 {
-		op, file := args[0], args[1]
+	if len(args) == 3 {
+		op, num, file := args[0], args[1], args[2]
 		if op == "-l" || op == "-n" || op == "-b" {
 			// noop
 		} else {
 			fmt.Printf("unsupported options")
+			return false
+		}
+		_, err := strconv.Atoi(num)
+		if err != nil {
+			fmt.Printf("second args should be num")
 			return false
 		}
 		if !ExistFile(file) {
@@ -64,6 +71,8 @@ func ValidateArgs(args []string) bool {
 			return false
 		}
 		return true
+	} else if len(args) == 2 {
+		return false
 	}
 
 	file := args[0]
