@@ -137,11 +137,18 @@ func SplitByLine(f string, n uint64, p string) error {
 			if err != nil {
 				return fmt.Errorf("file create error")
 			}
-			for _, t := range tmp {
-				_, err := newfile.WriteString(t + "\n")
+			for i, t := range tmp {
+				_, err := newfile.WriteString(t)
 				if err != nil {
 					newfile.Close()
 					return fmt.Errorf("file write error")
+				}
+				if i != len(tmp)-1 {
+					_, err := newfile.WriteString("\n")
+					if err != nil {
+						newfile.Close()
+						return fmt.Errorf("file write error")
+					}
 				}
 			}
 			newfile.Close()
@@ -153,11 +160,18 @@ func SplitByLine(f string, n uint64, p string) error {
 		if err != nil {
 			return fmt.Errorf("file create error")
 		}
-		for _, t := range tmp {
-			_, err := newfile.WriteString(t + "\n")
+		for i, t := range tmp {
+			_, err := newfile.WriteString(t)
 			if err != nil {
 				newfile.Close()
 				return fmt.Errorf("file write error")
+			}
+			if i != len(tmp)-1 {
+				_, err := newfile.WriteString("\n")
+				if err != nil {
+					newfile.Close()
+					return fmt.Errorf("file write error")
+				}
 			}
 		}
 		newfile.Close()
