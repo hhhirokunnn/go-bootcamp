@@ -16,15 +16,15 @@ func TestValidateArgs(t *testing.T) {
 	}{
 		{[]string{}, false},
 		{[]string{"dummy_file.txt"}, false},
-		{[]string{"-l", "dummy_file.txt"}, false},
 		{[]string{"-l", "test_file.txt"}, false},
-		{[]string{"-invalid", "dummy_file.txt"}, false},
-		{[]string{"-l", "-b", "dummy_file.txt"}, false},
 		{[]string{"-l", "-b", "test_file.txt"}, false},
+		{[]string{"-l", "-b", "1", "test_file.txt", "hoge"}, false},
+		{[]string{"-l", "1", "test_file.txt"}, false},
+		{[]string{"-invalid", "1", "test_file.txt", "hoge"}, false},
 		{[]string{"test_file.txt"}, true},
-		{[]string{"-l", "1", "test_file.txt"}, true},
-		{[]string{"-n", "1", "test_file.txt"}, true},
-		{[]string{"-b", "1", "test_file.txt"}, true},
+		{[]string{"-l", "1", "test_file.txt", "hoge"}, true},
+		{[]string{"-n", "1", "test_file.txt", "hoge"}, true},
+		{[]string{"-b", "1", "test_file.txt", "hoge"}, true},
 	}
 
 	for _, tt := range tests {
@@ -71,4 +71,16 @@ func TestCopyFile(t *testing.T) {
 		t.Errorf("given: %v / should not return error: %v", "test_file.txt", case2)
 	}
 	defer os.Remove("new_test_file.txt")
+}
+
+func TestSplitByLine(t *testing.T) {
+	// TODO
+}
+
+func TestSplitByNum(t *testing.T) {
+	// TODO
+}
+
+func TestSplitByByte(t *testing.T) {
+	// TODO
 }
